@@ -1,5 +1,6 @@
 package fr.ajc.securityExoFinal.controllers;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -32,4 +33,8 @@ public class SecurityAPIController {
 		return users;
 	}
 
+	@GetMapping("/me")
+	public String currentUserName(Principal principal) {
+        return principal.getName();
+	}
 }
