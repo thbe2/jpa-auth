@@ -20,6 +20,9 @@ public class CustomUserDetailsService implements UserDetailsService {
 	
 	private CustomUserService customUserService;
 
+	public CustomUserDetailsService(CustomUserService customUserService) {
+		this.customUserService = customUserService;
+	}
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		CustomUser user = customUserService.getByUsername(username);

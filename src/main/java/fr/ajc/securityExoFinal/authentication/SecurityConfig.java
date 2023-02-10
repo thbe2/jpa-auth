@@ -1,42 +1,76 @@
 package fr.ajc.securityExoFinal.authentication;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
+
+import fr.ajc.securityExoFinal.models.CustomRole;
+import fr.ajc.securityExoFinal.models.CustomUser;
+import fr.ajc.securityExoFinal.repositories.CustomUserRepository;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
-    @Value("${spring.h2.console.path}")
-    private String h2ConsolePath;
-    
+	private UserDetailsService userDetailsService;
+
+	public SecurityConfig(UserDetailsService userDetailsService) {
+		super();
+		this.userDetailsService = userDetailsService;
+//		this.h2ConsolePath = h2ConsolePath;
+	}
+
+	/*@Value("${spring.h2.console.path}")
+	private String h2ConsolePath;*/
+	// private String h2ConsolePath = "h2-ui";
+
 //    @Bean
-//    public String h2ConsolePath() {
-//    return "/h2-ui";
+//    String h2ConsolePath() {
+//        return "/h2-ui";
 //    }
-    
-//    @Bean
-//    public BCryptPasswordEncoder passwordEncoder() {
-//        return new BCryptPasswordEncoder();
-//    }
-    
-//    @Bean
-//    SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-//        http
-//                .cors(cors -> cors.disable())
-//                .csrf(csrf -> csrf.disable())
-//                .authorizeHttpRequests(request -> request
-//                        .requestMatchers("/register/**", "", "/").permitAll()
-//                        .requestMatchers(h2ConsolePath + "/**").authenticated()
-//                        .requestMatchers("/admin/**").hasRole("ADMIN")
-//                        .requestMatchers("/details/**").hasRole("USER")
-//                        .anyRequest().authenticated()
-//                )
-//                .formLogin(form -> form.permitAll())
-//                .logout(logout -> logout.permitAll())
-//                .userDetailsService(userDetailsService)
-//                .headers(headers -> headers.frameOptions().sameOrigin());
-//        return http.build();
-//    }
+
+	@Bean
+	public BCryptPasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
+	}
+	// C'est notre encodeur
+	// Si des problèmes avec h2 supprimer @Bean et mettre la méthode en static
+
+	@Bean
+	SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+		http
+				.cors(cors -> cors.disable())
+				.csrf(csrf -> csrf.disable())
+				.authorizeHttpRequests(request -> request
+						.requestMatchers("/register/**", "", "/").permitAll()
+						//.requestMatchers(h2ConsolePath + "/**").authenticated()
+						.requestMatchers("/admin/**").hasRole("ADMIN")
+						.requestMatchers("/details/**").hasRole("USER")
+						.anyRequest().authenticated()
+						)
+				.formLogin(form -> form.permitAll())
+				.logout(logout -> logout.permitAll())
+				.userDetailsService(userDetailsService)
+				.headers(headers -> headers.frameOptions().sameOrigin());
+		return http.build();
+	}
+
+	@Bean
+    CommandLineRunner commandLineRunner(CustomUserRepository userRepository) {
+    	return args -> {
+    		CustomRole roleAdmin = new CustomRole("ROLE_ADMIN");
+    		CustomRole roleUser = new CustomRole("ROLE_USER");
+    		CustomUser admin1 = new CustomUser("user1",passwordEncoder().encode("pass1"), List.of(roleAdmin, roleUser));
+    		userRepository.save(admin1);
+    	};
+    	
+    }
 }
