@@ -41,6 +41,7 @@ public class SecurityConfig {
 	public BCryptPasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
+//	static public BCryptPasswordEncoder encoder = new BCryptPasswordEncoder()
 	// C'est notre encodeur
 	// Si des problèmes avec h2 supprimer @Bean et mettre la méthode en static
 
@@ -50,9 +51,9 @@ public class SecurityConfig {
 				.cors(cors -> cors.disable())
 				.csrf(csrf -> csrf.disable())
 				.authorizeHttpRequests(request -> request
-						.requestMatchers("/register/**", "", "/").permitAll()
+						.requestMatchers("/register/**","/home/**", "", "/").permitAll()
 						//.requestMatchers(h2ConsolePath + "/**").authenticated()
-						.requestMatchers("/admin/**").hasRole("ADMIN")
+						.requestMatchers("/api/users/**").hasRole("ADMIN")
 						.requestMatchers("/details/**").hasRole("USER")
 						.anyRequest().authenticated()
 						)
@@ -68,8 +69,10 @@ public class SecurityConfig {
     	return args -> {
     		CustomRole roleAdmin = new CustomRole("ROLE_ADMIN");
     		CustomRole roleUser = new CustomRole("ROLE_USER");
-    		CustomUser admin1 = new CustomUser("user1",passwordEncoder().encode("pass1"), List.of(roleAdmin, roleUser));
-    		userRepository.save(admin1);
+//    		CustomUser admin1 = new CustomUser("adminuser",passwordEncoder().encode("pass1"), List.of(roleAdmin, roleUser));
+//    		userRepository.save(admin1);
+    		CustomUser user1 = new CustomUser("user1",passwordEncoder().encode("user1"), List.of(roleUser));
+    		userRepository.save(user1);
     	};
     	
     }

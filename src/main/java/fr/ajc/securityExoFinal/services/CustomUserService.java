@@ -1,5 +1,8 @@
 package fr.ajc.securityExoFinal.services;
 
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -17,5 +20,13 @@ public class CustomUserService {
 	
 	public CustomUser getByUsername(String username) {
 		return customUserRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException(String.format("User %s not found!", username)));
+	}
+
+	public List<CustomUser> getAllUsers() {
+		return customUserRepository.findAll();		
+	}
+
+	public CustomUser getUserById(Long id) {
+		return customUserRepository.findById(id).orElseThrow();
 	}
 }
