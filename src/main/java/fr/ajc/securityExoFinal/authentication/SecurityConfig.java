@@ -32,10 +32,10 @@ public class SecurityConfig {
 	private String h2ConsolePath;*/
 	// private String h2ConsolePath = "h2-ui";
 
-//    @Bean
-//    String h2ConsolePath() {
-//        return "/h2-ui";
-//    }
+    @Bean
+    String h2ConsolePath() {
+        return "/h2-ui";
+    }
 
 	@Bean
 	public BCryptPasswordEncoder passwordEncoder() {
@@ -51,8 +51,8 @@ public class SecurityConfig {
 				.cors(cors -> cors.disable())
 				.csrf(csrf -> csrf.disable())
 				.authorizeHttpRequests(request -> request
-						.requestMatchers("/register/**","/home/**", "", "/").permitAll()
-						//.requestMatchers(h2ConsolePath + "/**").authenticated()
+						.requestMatchers("/api/add-user/**","/home/**", "", "/").permitAll()
+						.requestMatchers(h2ConsolePath() + "/**").permitAll()
 						.requestMatchers("/api/users/**").hasRole("ADMIN")
 						.requestMatchers("/details/**").hasRole("USER")
 						.anyRequest().authenticated()

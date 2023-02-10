@@ -11,6 +11,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -32,6 +33,7 @@ public class CustomUser {
 
 	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "role"))
+//	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private List<CustomRole> roles;
 
 	public CustomUser(String username, String password, List<CustomRole> roles) {
@@ -40,4 +42,9 @@ public class CustomUser {
 		this.roles = roles;
 	}
 
+	public CustomUser(String username, String password) {
+		super();
+		this.username = username;
+		this.password = password;
+	} 
 }
