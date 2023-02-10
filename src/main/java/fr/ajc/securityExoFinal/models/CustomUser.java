@@ -29,9 +29,9 @@ public class CustomUser {
 	private Long id;
 	private String username;
 	private String password;
-	
-	@ManyToMany(cascade=CascadeType.ALL, fetch = FetchType.EAGER)
-	@JoinTable(name="user_roles", joinColumns=@JoinColumn(name="user_id", referencedColumnName = "id"), inverseJoinColumns=@JoinColumn(name="role"))
+
+	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "role"))
 	private List<CustomRole> roles;
 
 	public CustomUser(String username, String password, List<CustomRole> roles) {
