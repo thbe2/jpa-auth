@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Aper&#231;u de l'utilisateur</title>
+</head>
+<body>
+	<div>
+		<fieldset>
+			<legend th:text="${user.id}"></legend>
+			<p th:text="${user.username}" />
+			<p th:text="${user.password}" />
+			<p th:text="${user.roles}" />
+		</fieldset>
+	</div>
+</body>
+</html>
