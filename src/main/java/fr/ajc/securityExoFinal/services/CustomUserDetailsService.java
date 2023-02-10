@@ -18,14 +18,14 @@ import fr.ajc.securityExoFinal.models.CustomUser;
 public class CustomUserDetailsService implements UserDetailsService {
 	// Permet de spécifier à Spring security comment gérer les utilisateurs
 	
-	private CustomUserService customUserService;
+	private CustomUserServiceInterface customUserServiceInterface;
 
-	public CustomUserDetailsService(CustomUserService customUserService) {
-		this.customUserService = customUserService;
+	public CustomUserDetailsService(CustomUserServiceInterface customUserServiceInterface) {
+		this.customUserServiceInterface = customUserServiceInterface;
 	}
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		CustomUser user = customUserService.getByUsername(username);
+		CustomUser user = customUserServiceInterface.getByUsername(username);
 		return new User(user.getUsername(), user.getPassword(), rolesToAuthority(user.getRoles()));
 	}
 	// Le User est un User au sens de Spring Security --> on transforme une instance de CustomUser en User

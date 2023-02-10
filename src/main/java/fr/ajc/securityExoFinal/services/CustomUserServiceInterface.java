@@ -2,6 +2,7 @@ package fr.ajc.securityExoFinal.services;
 
 import java.util.List;
 
+import fr.ajc.securityExoFinal.models.CustomRole;
 import fr.ajc.securityExoFinal.models.CustomUser;
 
 public interface CustomUserServiceInterface {
@@ -13,5 +14,7 @@ public interface CustomUserServiceInterface {
 	List<CustomUser> getAllUsers();
 	
 	CustomUser getUserById(Long id);
+
+	CustomUser updateRole(Long id, List<CustomRole> roles);
 
 }

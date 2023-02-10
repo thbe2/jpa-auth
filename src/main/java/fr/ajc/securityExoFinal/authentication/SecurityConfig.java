@@ -2,7 +2,6 @@ package fr.ajc.securityExoFinal.authentication;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -41,7 +40,7 @@ public class SecurityConfig {
 	public BCryptPasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
-//	static public BCryptPasswordEncoder encoder = new BCryptPasswordEncoder()
+//	public static BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 	// C'est notre encodeur
 	// Si des problèmes avec h2 supprimer @Bean et mettre la méthode en static
 
@@ -51,11 +50,10 @@ public class SecurityConfig {
 				.cors(cors -> cors.disable())
 				.csrf(csrf -> csrf.disable())
 				.authorizeHttpRequests(request -> request
-						.requestMatchers("/api/add-user/**","/home/**", "", "/").permitAll()
-						.requestMatchers(h2ConsolePath() + "/**").permitAll()
-						.requestMatchers("/api/users/**").hasRole("ADMIN")
-						.requestMatchers("/details/**").hasRole("USER")
-						.anyRequest().authenticated()
+//						.requestMatchers("/api/add-user/**", "", "/").permitAll()
+//						.requestMatchers(h2ConsolePath() + "/**").permitAll()
+//						.requestMatchers("/api/users/**").hasRole("ADMIN")
+						.anyRequest().permitAll()//.authenticated()
 						)
 				.formLogin(form -> form.permitAll())
 				.logout(logout -> logout.permitAll())
@@ -69,10 +67,10 @@ public class SecurityConfig {
     	return args -> {
     		CustomRole roleAdmin = new CustomRole("ROLE_ADMIN");
     		CustomRole roleUser = new CustomRole("ROLE_USER");
-//    		CustomUser admin1 = new CustomUser("adminuser",passwordEncoder().encode("pass1"), List.of(roleAdmin, roleUser));
-//    		userRepository.save(admin1);
-    		CustomUser user1 = new CustomUser("user1",passwordEncoder().encode("user1"), List.of(roleUser));
-    		userRepository.save(user1);
+    		CustomUser admin1 = new CustomUser("adminuser",passwordEncoder().encode("pass1"), List.of(roleAdmin, roleUser));
+    		userRepository.save(admin1);
+//    		CustomUser user1 = new CustomUser("user1",passwordEncoder().encode("user1"), List.of(roleUser));
+//    		userRepository.save(user1);
     	};
     	
     }
