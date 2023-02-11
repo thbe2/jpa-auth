@@ -52,9 +52,17 @@ public class SecurityAPIController {
 
 	@PostMapping("/add-user")
 	public CustomUser addUser(@RequestBody CustomUser user) {
-		CustomRole role = customRoleServiceInterface.getByRoleName("ROLE_USER");
-		user.setRoles(List.of(role));
+		// Hash du mot de passe
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
+		// Récupération du rôle USER
+		CustomRole roleUser = customRoleServiceInterface.getByRoleName("ROLE_USER");
+		// Créer le rôle s'il n'existe pas
+		if (Objects.isNull(roleUser)) {
+            roleUser = new CustomRole("ROLE_USER");
+        }
+        // Attribution du rôle à l'utilisateur
+        user.setRoles(List.of(roleUser));
+        // Ajout de l'user en bdd
 		return customUserServiceInterface.addUser(user);
 	}
 

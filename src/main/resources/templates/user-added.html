@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Utilisateur ajouté</title>
+</head>
+<body>
+	<div>
+		<fieldset>
+			Id= <p th:text="${user.id}" />
+			Username= <p th:text="${user.username}" />
+			Password= <p th:text="${user.password}" />
+			Roles= <p th:text="${user.roles}" />
+		</fieldset>
+	</div>
+</body>
+</html>
