@@ -57,14 +57,14 @@ public class SecurityController {
 		return mav;
 }
 	
-	@GetMapping("/add")
+	@GetMapping("register")
 	public ModelAndView addUser() {
 		ModelAndView mav = new ModelAndView(ADD_FORM);
 		mav.addObject("user", new CustomUser());
 		return mav;
 	}
 
-	@PostMapping("/save")
+	@PostMapping("save")
 	public ModelAndView saveUser(@ModelAttribute CustomUser user) {
 		ModelAndView mav = new ModelAndView(USER_ADDED);
 		// Hash du mot de passe

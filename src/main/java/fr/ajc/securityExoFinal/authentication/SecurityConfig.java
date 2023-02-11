@@ -50,10 +50,12 @@ public class SecurityConfig {
 				.cors(cors -> cors.disable())
 				.csrf(csrf -> csrf.disable())
 				.authorizeHttpRequests(request -> request
-//						.requestMatchers("/api/add-user/**", "", "/").permitAll()
-//						.requestMatchers(h2ConsolePath() + "/**").permitAll()
-//						.requestMatchers("/api/users/**").hasRole("ADMIN")
-						.anyRequest().permitAll()//.authenticated()
+						.requestMatchers("/register**").permitAll()
+						.requestMatchers(h2ConsolePath() + "/**").permitAll()
+						.requestMatchers("/api/users/**","/users/**").hasRole("ADMIN")
+						.requestMatchers("/api/add-user/**").hasRole("ADMIN")
+						.requestMatchers("/api/change-role/**").hasRole("ADMIN")
+						.anyRequest().authenticated()
 						)
 				.formLogin(form -> form.permitAll())
 				.logout(logout -> logout.permitAll())
@@ -67,10 +69,10 @@ public class SecurityConfig {
     	return args -> {
     		CustomRole roleAdmin = new CustomRole("ROLE_ADMIN");
     		CustomRole roleUser = new CustomRole("ROLE_USER");
-    		CustomUser admin1 = new CustomUser("adminuser",passwordEncoder().encode("pass1"), List.of(roleAdmin, roleUser));
-    		userRepository.save(admin1);
-//    		CustomUser user1 = new CustomUser("user1",passwordEncoder().encode("user1"), List.of(roleUser));
-//    		userRepository.save(user1);
+//    		CustomUser admin1 = new CustomUser("adminuser",passwordEncoder().encode("pass1"), List.of(roleAdmin, roleUser));
+//    		userRepository.save(admin1);
+    		CustomUser user1 = new CustomUser("user1",passwordEncoder().encode("user1"), List.of(roleUser));
+    		userRepository.save(user1);
     	};
     	
     }
